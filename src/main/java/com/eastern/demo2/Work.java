@@ -1,5 +1,6 @@
 package com.eastern.demo2;
 
+import com.eastern.utils.PropertiesUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -21,9 +22,9 @@ public class Work {
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("43.138.222.27");
-        factory.setUsername("admin");
-        factory.setPassword("Miss1314!");
+        factory.setHost(PropertiesUtil.get("host"));
+        factory.setUsername(PropertiesUtil.get("userName"));
+        factory.setPassword(PropertiesUtil.get("password"));
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
