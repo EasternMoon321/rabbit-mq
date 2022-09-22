@@ -1,4 +1,4 @@
-package com.eastern.demo4;
+package com.eastern.demo5;
 
 import com.eastern.utils.PropertiesUtil;
 import com.rabbitmq.client.Channel;
@@ -17,9 +17,9 @@ import java.util.concurrent.TimeoutException;
  * @Version 1.0
  */
 @Slf4j
-public class ReceiveLogsDirect {
-    private final static String EXCHANGE_TYPE = "direct";
-    private final static String EXCHANGE_NAME = "direct_logs";
+public class ReceiveLogsTopic {
+    private final static String EXCHANGE_TYPE = "topic";
+    private final static String EXCHANGE_NAME = "topic_logs";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -34,12 +34,12 @@ public class ReceiveLogsDirect {
         String queueName = channel.queueDeclare().getQueue();
 
         if (args.length < 1) {
-            log.error("Usage: ReceiveLogsDirect [info] [warning] [error]");
+            log.error("Usage: ReceiveLogsTopic [binding_key]...");
             return;
         }
         // 绑定了三次
-        for (String severity : args) {
-            channel.queueBind(queueName, EXCHANGE_NAME, severity);
+        for (String bindingKey : args) {
+            channel.queueBind(queueName, EXCHANGE_NAME, bindingKey);
         }
         log.info(" [*] Waiting for messages. To exit press CTRL+C");
 

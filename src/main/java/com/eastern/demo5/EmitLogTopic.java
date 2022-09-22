@@ -1,4 +1,4 @@
-package com.eastern.demo4;
+package com.eastern.demo5;
 
 import com.eastern.utils.PropertiesUtil;
 import com.rabbitmq.client.Channel;
@@ -16,9 +16,9 @@ import java.util.concurrent.TimeoutException;
  * @Version 1.0
  */
 @Slf4j
-public class EmitLogDirect {
-    private final static String EXCHANGE_TYPE = "direct";
-    private final static String EXCHANGE_NAME = "direct_logs";
+public class EmitLogTopic {
+    private final static String EXCHANGE_TYPE = "topic";
+    private final static String EXCHANGE_NAME = "topic_logs";
 
 
     public static void main(String[] args) throws IOException, TimeoutException {
@@ -32,12 +32,20 @@ public class EmitLogDirect {
                 ) {
             // 声明交换机
             channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
-            String severity = getSeverity(args);
+            String routingKey = getRoutingKey(args);
             String message = getMessage(args);
 
-            channel.basicPublish(EXCHANGE_NAME, severity, null, message.getBytes());
+            channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+            log.info(" [x] Sent '{}':'{}'", routingKey, message);
         }
 
+    }
+
+    private static String getRoutingKey(String[] args) {
+        if (args.length < 1) {
+            return "anonymous.info";
+        }
+        return args[0];
     }
 
     private static String getMessage(String[] args) {
@@ -62,10 +70,4 @@ public class EmitLogDirect {
         return words.toString();
     }
 
-    private static String getSeverity(String[] args) {
-        if (args.length < 1) {
-            return "info";
-        }
-        return args[0];
-    }
 }
