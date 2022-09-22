@@ -1,4 +1,4 @@
-package com.eastern.durability;
+package com.eastern.demo2.durability;
 
 import com.eastern.utils.PropertiesUtil;
 import com.rabbitmq.client.Channel;

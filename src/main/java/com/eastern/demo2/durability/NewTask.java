@@ -1,4 +1,4 @@
-package com.eastern.durability;
+package com.eastern.demo2.durability;
 
 /**
  * @Author chensheng13
